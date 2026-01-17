@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+torch
+transformers
+redis
+pydantic
+bitsandbytes
+accelerate
+scipy
+git+https://github.com/rasbt/reasoning-from-scratch.git

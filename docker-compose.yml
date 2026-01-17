@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/edu_platform
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  # ai-service:
+  #   build: ./ai-service
+  #   ports:
+  #     - "8001:8001"
+  #   volumes:
+  #     - ./ai-service:/app
+  #   environment:
+  #     - REDIS_URL=redis://redis:6379/1
+  #   depends_on:
+  #     - redis
+  #   # deploy:
+  #   #   resources:
+  #   #     reservations:
+  #   #       devices:
+  #   #         - driver: nvidia
+  #   #           count: 1
+  #   #           capabilities: [ gpu ]
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8080
+    depends_on:
+      - backend
+
+  db:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=edu_platform
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  mongo:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # analytics-service:
+  #   build: ./analytics-service
+  #   ports:
+  #     - "8002:8002"
+  #   environment:
+  #     - REDIS_URL=redis://redis:6379/2
+  #   depends_on:
+  #     - redis
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+      # - ai-service
+      # - analytics-service
+
+volumes:
+  postgres_data:
+  redis_data:
+  mongo_data:
