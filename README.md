@@ -108,6 +108,8 @@ EduZo allows students to **log achievements**, faculty to **verify authenticity*
 git clone https://github.com/ArjunBora/Eduzo.git
 cd Eduzo
 ```
+### 2 Documentation
+https://github.com/ArjunBora/Eduzo/blob/main/EduZo.pdf
 
 
 ## Author
