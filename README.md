@@ -1,43 +1,74 @@
-# EduZo - Centralized Student Portfolio Platform
+# EduZo — Centralized Student Portfolio Platform
 
-A unified mobile and web application serving as a single touchpoint to track and manage all student activities, from academics to personal achievements.
+**EduZo is a unified student portfolio hub that centralizes and verifies academic and extracurricular activities to generate shareable digital profiles for placements and institutional growth.**
 
-## Features
 
-### 1. Centralized Platform
-Fed by the mobile/web app, activity tracking, and achievement management. A single hub for all student interactions.
 
-### 2. Verified Records
-To ensure data credibility, all uploads (academic or extra-curricular) must be approved by faculty members (`PENDING` -> `VERIFIED`). This eliminates self-declared, unverified claims.
+##  Quick Start (Run Locally)
 
-### 3. Digital Portfolio
-The system automatically generates a shareable portfolio for students (`/p/:token`). Designed for:
-- Professional placements
-- Scholarship applications
-- Further education
+You can get the entire microservice ecosystem running in under a minute using Docker or the provided automation scripts.
 
-### 4. Analytics & Reporting
-Real-time insights for students, faculty, and the institution. Supports institutional accreditation processes.
+### Prerequisites
+* **Docker & Docker Compose** (Recommended)
+* **Python 3.9+** (For script-based startup)
+* **Node.js** (For manual frontend development)
 
-### 5. Integration Ready
-Built to work alongside existing institutional systems like Learning Management Systems (LMS) and Enterprise Resource Planning (ERP) software.
+### Installation
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/ArjunBora/Eduzo.git](https://github.com/ArjunBora/Eduzo.git)
+   cd Eduzo
+Run with Docker:
 
-## System Flow
+Bash
 
-**Inputs (Data Sources)**
-- Mobile/Web App
-- Activity Tracking
-- Academic Records
+docker-compose up --build
+Alternative: Run with Python Script:
 
-**The Core (Processing)**
-- Data Verification (Faculty Review)
-- Organization & Storage
+Bash
 
-**Outputs (Deliverables)**
-- **Digital Portfolio**: Shareable profiles.
-- **Analytics**: Real-time insights.
+python run_all.py
+The Frontend will be available at http://localhost:3000 and the Gateway at http://localhost:8000.
 
-## Tech Stack
-- **Frontend**: React (Web), React Native (Mobile)
-- **Backend**: FastAPI, SQLite (Dev)
-- **Services**: AI Reasoning (Qwen3), Analytics (Redis)
+ Tech Stack
+EduZo is built with a scalable microservices architecture to handle high-concurrency verification and data processing.
+
+Frontend: React (Web Dashboard) & React Native (Mobile App)
+
+Backend: FastAPI (Python)
+
+AI Service: Qwen3 AI Reasoning for automated activity categorization
+
+Database & Caching: SQLite (Development) & Redis (Analytics)
+
+Infrastructure: Docker, Docker Compose, and a centralized Gateway service
+
+Languages: TypeScript (Primary), Python, JavaScript
+
+ System Architecture & Flow
+
+Shutterstock
+Centralized Tracking: Students log academic milestones and extracurricular achievements via the mobile or web app.
+
+Faculty Verification: To ensure credibility, all entries remain in a PENDING state until a faculty member reviews and marks them as VERIFIED.
+
+Automated Portfolios: Once verified, the system generates a professional, shareable digital portfolio (accessible via /p/:token) for recruiters or scholarship boards.
+
+Institutional Analytics: Real-time data provides departments with insights into student performance and engagement metrics.
+
+Project Structure
+frontend/: React-based web application dashboard.
+
+backend/: Core business logic and API services.
+
+mobile/: React Native source code for the student mobile app.
+
+ai-service/: Qwen3 integration for intelligent data processing and categorization.
+
+analytics-service/: Redis-backed service for real-time institutional reporting.
+
+gateway/: Unified entry point for all microservice communications.
+
+ Authors
+Arjun Bora — GitHub Profile
+Chanchal Taye -- GitHub Profile
