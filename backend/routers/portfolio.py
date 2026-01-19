@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+from datetime import datetime, date
 from database import get_db
 from models import User, Achievement, AchievementStatus, UserRole, Student
-from schemas import AchievementCreate, AchievementResponse, PortfolioResponse
+from schemas import AchievementCreate, AchievementResponse, PortfolioResponse, ProfileUpdateRequest
 from auth import get_current_user
 import uuid
 
@@ -34,6 +35,13 @@ def add_achievement(
     db.refresh(new_achievement)
     return new_achievement
 
+def calculate_age(dob):
+    """Calculate age from date of birth"""
+    if not dob:
+        return None
+    today = date.today()
+    return today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
 @router.get("/me", response_model=PortfolioResponse)
 def get_my_portfolio(
     current_user: User = Depends(get_current_user), 
@@ -45,10 +53,62 @@ def get_my_portfolio(
     student = current_user.student_profile
     return {
         "student_name": student.full_name,
+        "email": current_user.email,
+        "enrollment_no": student.enrollment_no,
         "department": student.department,
         "program": student.program,
         "enrollment_year": student.enrollment_year,
         "gpa": student.gpa,
+        "phone_number": student.phone_number,
+        "date_of_birth": student.date_of_birth,
+        "age": calculate_age(student.date_of_birth),
+        "bio": student.bio,
+        "achievements": student.achievements,
+        "is_public": student.portfolio.is_public if student.portfolio else False,
+        "share_token": student.portfolio.share_token if student.portfolio else None
+    }
+
+@router.put("/profile", response_model=PortfolioResponse)
+def update_profile(
+    profile_data: ProfileUpdateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Update student profile information"""
+    if current_user.role != UserRole.STUDENT:
+        raise HTTPException(status_code=403, detail="Not a student")
+    
+    student = current_user.student_profile
+    
+    # Update only provided fields
+    if profile_data.phone_number is not None:
+        student.phone_number = profile_data.phone_number
+    if profile_data.date_of_birth is not None:
+        student.date_of_birth = datetime.combine(profile_data.date_of_birth, datetime.min.time())
+    if profile_data.bio is not None:
+        student.bio = profile_data.bio
+    if profile_data.full_name is not None:
+        student.full_name = profile_data.full_name
+    if profile_data.department is not None:
+        student.department = profile_data.department
+    if profile_data.program is not None:
+        student.program = profile_data.program
+    
+    db.commit()
+    db.refresh(student)
+    
+    return {
+        "student_name": student.full_name,
+        "email": current_user.email,
+        "enrollment_no": student.enrollment_no,
+        "department": student.department,
+        "program": student.program,
+        "enrollment_year": student.enrollment_year,
+        "gpa": student.gpa,
+        "phone_number": student.phone_number,
+        "date_of_birth": student.date_of_birth,
+        "age": calculate_age(student.date_of_birth),
+        "bio": student.bio,
         "achievements": student.achievements,
         "is_public": student.portfolio.is_public if student.portfolio else False,
         "share_token": student.portfolio.share_token if student.portfolio else None

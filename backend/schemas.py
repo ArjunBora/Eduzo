@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from models import UserRole, AchievementStatus, AchievementCategory
 
 class Token(BaseModel):
@@ -52,10 +52,24 @@ class AchievementResponse(AchievementBase):
 
 class PortfolioResponse(BaseModel):
     student_name: str
+    email: Optional[str] = None
+    enrollment_no: Optional[str] = None
     department: Optional[str] = None
     program: Optional[str] = None
     enrollment_year: Optional[int] = None
     gpa: Optional[str] = None
+    phone_number: Optional[str] = None
+    date_of_birth: Optional[datetime] = None
+    age: Optional[int] = None
+    bio: Optional[str] = None
     achievements: List[AchievementResponse]
     is_public: bool
     share_token: Optional[str] = None
+
+class ProfileUpdateRequest(BaseModel):
+    phone_number: Optional[str] = None
+    date_of_birth: Optional[date] = None
+    bio: Optional[str] = None
+    full_name: Optional[str] = None
+    department: Optional[str] = None
+    program: Optional[str] = None

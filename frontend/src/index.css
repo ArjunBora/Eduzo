@@ -6,6 +6,7 @@
   .glass {
     @apply bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg border border-white border-opacity-30;
   }
+
   .glass-dark {
     @apply bg-gray-900 bg-opacity-40 backdrop-filter backdrop-blur-lg border border-white border-opacity-10;
   }
@@ -13,4 +14,74 @@
 
 body {
   @apply bg-gray-50 text-gray-900 overflow-x-hidden;
+}
+
+.dark body,
+html.dark body {
+  @apply bg-gray-900 text-gray-100;
+}
+
+/* Text selection styling for dark mode */
+.dark ::selection,
+html.dark ::selection {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.dark ::-moz-selection,
+html.dark ::-moz-selection {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* Consistent dark mode input styling - slate backgrounds */
+.dark input,
+.dark textarea,
+.dark select,
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
+  color-scheme: dark;
+}
+
+/* Focus state with outline highlight */
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus,
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  outline: 2px solid #3b82f6 !important;
+  outline-offset: 2px;
+  border-color: #3b82f6 !important;
+}
+
+/* Placeholder text in dark mode */
+.dark input::placeholder,
+.dark textarea::placeholder,
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #93c5fd !important;
+}
+
+/* Fix autofill styling in dark mode */
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+html.dark input:-webkit-autofill,
+html.dark input:-webkit-autofill:hover,
+html.dark input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #1e3a5f inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Dark mode date picker styling */
+.dark input[type="date"],
+html.dark input[type="date"] {
+  background-color: #1e3a5f !important;
+  color: #ffffff !important;
 }

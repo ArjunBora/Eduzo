@@ -49,6 +49,10 @@ class Student(Base):
     enrollment_year = Column(Integer, nullable=True)
     current_semester = Column(Integer, nullable=True)
     gpa = Column(String, nullable=True)  # Store as string to allow "3.5/4.0" format
+    # New profile fields
+    phone_number = Column(String, nullable=True)
+    date_of_birth = Column(DateTime(timezone=True), nullable=True)
+    bio = Column(Text, nullable=True)
     
     user = relationship("User", back_populates="student_profile")
     achievements = relationship("Achievement", back_populates="student")
